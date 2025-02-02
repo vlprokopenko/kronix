@@ -9,8 +9,8 @@ void kernel_init() {
   print("[KERNEL_EARLY] Early Kernel loaded!\n");
   loadGDT();
   loadIDT();
-  while (inb(0x64) & 0x01) {  // While the keyboard controller has data
-        inb(0x60);                // Discard the data in the buffer
+  while (inb(0x64) & 0x01) {
+        inb(0x60); 
     }
   outb(0x64, 0xAE);
   asm volatile("sti");
