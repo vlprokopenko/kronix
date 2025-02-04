@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "drivers/vga.h"
 #include "asm/ports-common.h"
+#include "arch/i686/idt.h"
 #include "drivers/tty.h"
 
 static inline void 
@@ -30,11 +31,16 @@ remap_pic_for_keyboard()
 void
 keyboard_handler() 
 {
-  __asm__("cli");
-  __asm__("pushal");
-  flush_ps2_buffer();
-  uint8_t scancode = inb(0x60);
-  print("Keyboard key pressed\n");
-  outb(0x20, 0x20);
-  __asm__("popal; leave; iret");
+    flush_ps2_buffer();
+    outb(0x20, 0x20);
+}
+
+void
+init_keyboard() 
+{
+    print("[KEYBOARD] Keyboard started!\n");
+    setIDTEntry(33, (uint32_t)keyboard_handler, 0x8E);
+    flush_ps2_buffer();
+    outb(0x60, 0xFF);
+    outb(0x60, 0xF4);
 }

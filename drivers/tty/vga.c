@@ -37,20 +37,6 @@ scroll()
     }
 }
 
-void
-clearScreen()
-{
-        for (uint16_t y = 1; y < height; y++) {
-        	for (uint16_t x = 0; x < width; x++) {
-             	    buf[(y - 1) * width + x] = buf[y * width + x];
-         }
-     }
-	for (uint16_t x = 0; x < width; x++) {
-		buf[(height - 1) * width + x] = vga_entry(' ', VGA_COLOR_BLACK | VGA_COLOR_WHITE);
-	}
-}
-
-
 void 
 newline() 
 {

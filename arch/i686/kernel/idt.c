@@ -33,10 +33,21 @@ void setIDTEntry(int num, uint32_t handler, uint8_t flags) {
 }
 
 void timer_placeholder(){
+  print("[TIMER] Timer interrupt acknowledged!\n");
   outb(0x20, 0x20);
 }
 
 void loadIDT() {
+  outb(0x20, 0x11);
+  outb(0xA0, 0x11);
+  outb(0x21, 0x20);
+	outb(0xA1, 0x28);
+	outb(0x21,0x04);
+	outb(0xA1,0x02);
+	outb(0x21, 0x01);
+	outb(0xA1, 0x01);
+	outb(0x21, 0x0);
+	outb(0xA1, 0x0);
   setIDTEntry(0, (uint32_t)isr0, 0x8E);
   setIDTEntry(1, (uint32_t)isr1, 0x8E);
   setIDTEntry(2, (uint32_t)isr2, 0x8E);
@@ -52,10 +63,10 @@ void loadIDT() {
   setIDTEntry(13, (uint32_t)isr13, 0x8E);
   setIDTEntry(14, (uint32_t)isr14, 0x8E);
   setIDTEntry(32, (uint32_t)timer_placeholder, 0x8E);
-  setIDTEntry(33, (uint32_t)keyboard_handler, 0x8E);  
   idtreg.base = (uint32_t)&idt;
 	idtreg.limit = 256*sizeof(IDT)-1;
 	asm volatile("lidt (%0)" : : "r" (&idtreg));
   remap_pic_for_keyboard();
+  asm volatile("sti");
   print("[IDT] IDT loaded\n");
 }

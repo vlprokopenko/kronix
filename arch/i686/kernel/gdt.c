@@ -2,6 +2,24 @@
 #include <stdint.h>
 #include "drivers/vga.h"
 
+struct __attribute__((packed)) tssEntry {
+    uint32_t esp0;
+    uint32_t ss0;
+    uint32_t esp1;
+    uint32_t ss1;
+    uint32_t esp2;
+    uint32_t ss2;
+    uint32_t cr3;
+    uint32_t eip;
+    uint32_t eflags;
+    uint32_t eax, ecx, edx, ebx;
+    uint32_t esp, ebp, esi, edi;
+    uint32_t es, cs, ss, ds, fs, gs;
+    uint32_t ldt;
+    uint16_t trap;
+    uint16_t iomap_base;
+} TSS;
+
 typedef struct
 {
   uint16_t limit;
@@ -40,11 +58,12 @@ extern void flushgdt(GDTRegister *gdtReg);
 void
 loadGDT() 
 {
-    setGDTEntry(0, 0, 0, 0, 0);
+    setGDTEntry(0, 0, 0x00000000, 0x00, 0x0);
     setGDTEntry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
     setGDTEntry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
     setGDTEntry(3, 0, 0xFFFFF, 0xFA, 0xC);
     setGDTEntry(4, 0, 0xFFFFF, 0xF2, 0xC);
+    setGDTEntry(5, (uint32_t)&TSS, sizeof(TSS)-1, 0x89, 0x0); 
 
     gdtReg.limit = sizeof(gdt) - 1;
     gdtReg.base = (uint32_t)&gdt;
