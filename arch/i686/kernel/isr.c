@@ -1,6 +1,7 @@
-#include "../../../include/arch/i686/isr.h"
-#include "../../../include/drivers/vga.h"
-#include "../../../include/asm/ports-common.h"
+/* isr.c - Interrupt Service Routines for the IDT */
+#include "arch/i686/isr.h"
+#include "drivers/vga.h"
+#include "asm/ports-common.h"
 #include <stdbool.h>
 
 typedef struct registers {
@@ -9,7 +10,9 @@ typedef struct registers {
 
 struct registers regs[256];
 
-void isr0() {
+void
+isr0() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $0");
@@ -17,7 +20,9 @@ void isr0() {
   __asm__("popal; leave; iret");
 }
 
-void isr1() {
+void
+isr1() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $1");
@@ -25,7 +30,9 @@ void isr1() {
   __asm__("popal; leave; iret");
 }
 
-void isr2() {
+void
+isr2() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $2");
@@ -33,7 +40,9 @@ void isr2() {
   __asm__("popal; leave; iret");
 }
 
-void isr3() {
+void
+isr3() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $3");
@@ -41,7 +50,9 @@ void isr3() {
   __asm__("popal; leave; iret");
 }
 
-void isr4() {
+void
+isr4() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $4");
@@ -49,7 +60,9 @@ void isr4() {
   __asm__("popal; leave; iret");
 }
 
-void isr5() {
+void
+isr5() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push $5");
@@ -66,7 +79,9 @@ void isr6() {
   __asm__("popal; leave; iret");
 }
 
-void isr7() {
+void
+isr7() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");
@@ -75,7 +90,9 @@ void isr7() {
   __asm__("popal; leave; iret");
 }
 
-void isr8() {
+void
+isr8() 
+{
   __asm__("cli");
   screenColor(VGA_COLOR_RED);
   print("Double fault. Halting now\n");
@@ -90,7 +107,9 @@ void isr8() {
   }
 }
 
-void isr10() {
+void
+isr10() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");
@@ -99,7 +118,9 @@ void isr10() {
   __asm__("popal; leave; iret");
 }
 
-void isr11() {
+void
+isr11() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");
@@ -108,7 +129,9 @@ void isr11() {
   __asm__("popal; leave; iret");
 }
 
-void isr12() {
+void
+isr12() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");
@@ -122,7 +145,9 @@ void isr12() {
   }
 }
 
-void isr13() {
+void
+isr13() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");
@@ -131,7 +156,9 @@ void isr13() {
   __asm__("popal; leave; iret");
 }
 
-void isr14() {
+void
+isr14() 
+{
   __asm__("cli");
   __asm__("pushal");
   __asm__("push %eax");

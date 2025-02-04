@@ -24,7 +24,7 @@ enum vga_colors {
 
 void newline();
 void print(const char* txt);
-void print_exc(const uint8_t *txt);
+void print_hex(const uint8_t *txt);
 void screenColor(uint16_t color);
 void scroll();
 

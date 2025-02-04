@@ -1,9 +1,10 @@
+/* idt.c - load the Interrupt Descriptor Table */
 #include <stdint.h>
-#include "../../../include/arch/i686/idt.h"
-#include "../../../include/drivers/vga.h"
-#include "../../../include/arch/i686//isr.h"
-#include "../../../include/drivers/tty.h"
-#include "../../../include/asm/ports-common.h"
+#include "arch/i686/idt.h"
+#include "drivers/vga.h"
+#include "arch/i686//isr.h"
+#include "drivers/tty.h"
+#include "asm/ports-common.h"
 
 typedef struct
 {
@@ -32,8 +33,6 @@ void setIDTEntry(int num, uint32_t handler, uint8_t flags) {
 }
 
 void timer_placeholder(){
-  /* placeholder code for now, when we get to the timer I will place it somewhere else */ 
-  print("Blah");
   outb(0x20, 0x20);
 }
 

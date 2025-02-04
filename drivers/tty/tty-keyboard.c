@@ -1,9 +1,20 @@
+/* tty-keyboard.c - keyboard driver */
 #include <stdint.h>
-#include "../../include/drivers/vga.h"
-#include "../../include/asm/ports-common.h"
-#include "../../include/drivers/tty.h"
+#include "drivers/vga.h"
+#include "asm/ports-common.h"
+#include "drivers/tty.h"
 
-void remap_pic_for_keyboard() {
+static inline void 
+flush_ps2_buffer() 
+{
+    while (inb(0x64) & 0x01) {
+        (void)inb(0x60);
+    }
+}
+
+void 
+remap_pic_for_keyboard() 
+{
     outb(0x20, 0x11);
     outb(0xA0, 0x11);
     outb(0x21, 0x20);
@@ -16,11 +27,14 @@ void remap_pic_for_keyboard() {
     outb(0xA1, 0x0);
 }
 
-void keyboard_handler() {
+void
+keyboard_handler() 
+{
   __asm__("cli");
   __asm__("pushal");
+  flush_ps2_buffer();
   uint8_t scancode = inb(0x60);
-  print("Keyboard key pressed");
+  print("Keyboard key pressed\n");
   outb(0x20, 0x20);
-  __asm__("popal; leave");
+  __asm__("popal; leave; iret");
 }

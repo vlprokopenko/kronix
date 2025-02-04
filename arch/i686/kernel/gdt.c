@@ -1,5 +1,6 @@
+/* gdt.c - load the GDT */
 #include <stdint.h>
-#include "../../../include/drivers/vga.h"
+#include "drivers/vga.h"
 
 typedef struct
 {
@@ -19,7 +20,9 @@ typedef struct
 
 GDTEntry gdt[3];
 
-void setGDTEntry(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity) {
+void 
+setGDTEntry(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity) 
+{
     gdt[num].base_low = base & 0xFFFF;
     gdt[num].base_mid = (base >> 16) & 0xFF;
     gdt[num].base_high = (base >> 24) & 0xFF;
@@ -32,14 +35,19 @@ void setGDTEntry(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_t
 }
 
 GDTRegister gdtReg;
-extern void gdtFlush(GDTRegister *gdtReg);
+extern void flushgdt(GDTRegister *gdtReg);
 
-void loadGDT() {
+void
+loadGDT() 
+{
     setGDTEntry(0, 0, 0, 0, 0);
     setGDTEntry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
     setGDTEntry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    setGDTEntry(3, 0, 0xFFFFF, 0xFA, 0xC);
+    setGDTEntry(4, 0, 0xFFFFF, 0xF2, 0xC);
+
     gdtReg.limit = sizeof(gdt) - 1;
     gdtReg.base = (uint32_t)&gdt;
-    gdtFlush(&gdtReg);
+    flushgdt(&gdtReg);
     print("[GDT] GDT Loaded\n");
 }

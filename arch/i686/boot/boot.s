@@ -1,3 +1,5 @@
+# boot.s - i686 booting code for GRUB
+
 # Declare constants for the multiboot header.
 .set ALIGN,    1<<0             # align loaded modules on page boundaries
 .set MEMINFO,  1<<1             # provide memory map
@@ -115,6 +117,6 @@ _start:
 	call kernel_init
 
 	# Infinite loop if the system has nothing more to do.
-	#cli
+	cli
 1:	hlt
 	jmp 1b
